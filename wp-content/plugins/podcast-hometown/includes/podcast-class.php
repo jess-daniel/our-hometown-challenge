@@ -32,7 +32,7 @@ class Podcast_Widget extends WP_Widget {
 
         // -- widget content --
         // TODO: figure out how to add widget to main content section 
-        
+
         // fetch html if enabled
         if ($instance['auto'] == 'enabled') {
             // TODO: make file path dynamic based on url (use refresh option for now)
@@ -75,7 +75,6 @@ class Podcast_Widget extends WP_Widget {
                     $content .= '<div> <a href=' . $linkHref . '</a>' . $linkText . '</div>';
                 }
                 // display list of podcast services
-                echo "From fetch<br>";
                 echo $content;
 
                 // write file to cache list
