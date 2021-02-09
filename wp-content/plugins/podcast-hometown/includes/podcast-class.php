@@ -71,9 +71,10 @@ class Podcast_Widget extends WP_Widget {
 
                     $linkHref = $link->getAttribute('href');
                     $linkText = $link->textContent;
+                    $subString = explode(" ", $linkText);
 
                     // save for later 
-                    $content .= "<a href=$linkHref> $linkText </a>";
+                    $content .= "<a id=$subString[0] href=$linkHref> $linkText </a>";
                 }
                 // display list of podcast services either vertically or horizontally 
                 if ($instance['layout'] == 'vertical') {
