@@ -26,6 +26,7 @@ class Podcast_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		echo $args['before_widget'];
+        
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
@@ -36,7 +37,7 @@ class Podcast_Widget extends WP_Widget {
         // fetch html if enabled
         if ($instance['auto'] == 'enabled') {
             // TODO: make file path dynamic based on url (use refresh option for now)
-            $cache_file = __DIR__.'/index.cache.php';
+            $cache_file = dirname(__DIR__, 3).'/uploads/index.cache.php';
             $content ;
 
             // use cache if set and still fresh
@@ -72,10 +73,18 @@ class Podcast_Widget extends WP_Widget {
                     $linkText = $link->textContent;
 
                     // save for later 
-                    $content .= '<div> <a href=' . $linkHref . '</a>' . $linkText . '</div>';
+                    $content .= "<a href=$linkHref> $linkText </a>";
                 }
-                // display list of podcast services
-                echo $content;
+                // display list of podcast services either vertically or horizontally 
+                if ($instance['layout'] == 'vertical') {
+                    echo "<div id=podcast-content-vertical>";
+                    echo $content;
+                    echo "</div>";
+                } else {
+                    echo "<div id=podcast-content>";
+                    echo $content;
+                    echo "</div>";
+                }
 
                 // write file to cache list
                 // TODO: create new directory for each url cache
@@ -106,6 +115,8 @@ class Podcast_Widget extends WP_Widget {
         $auto = ! empty( $instance['auto'] ) ? $instance['auto'] : esc_html__( '', 'podcast_domain' );
         
         $refresh = ! empty( $instance['refresh'] ) ? $instance['refresh'] : esc_html__( '', 'podcast_domain' );
+
+        $layout = ! empty( $instance['layout'] ) ? $instance['layout'] : esc_html__( '', 'podcast_domain' );
         
 		?> 
 		<p>
@@ -163,6 +174,23 @@ class Podcast_Widget extends WP_Widget {
                 </option>
             </select>
 		</p>
+
+        <p>
+		    <label for="<?php echo esc_attr( $this->get_field_id( 'layout' ) ); ?>"><?php esc_attr_e( 'Layout:', 'podcast_domain' ); ?></label> 
+		    
+            <select
+            class="widefat" 
+            id="<?php echo esc_attr( $this->get_field_id( 'layout' ) ); ?>" 
+            name="<?php echo esc_attr( $this->get_field_name( 'layout' ) ); ?>" 
+            >
+                <option value="vertical" <?php echo ($layout == 'vertical') ? 'selected' : ''; ?>>
+                    Vertical
+                </option>
+                <option value="horizontal" <?php echo ($layout == 'horizontal') ? 'selected' : ''; ?>>
+                    Horizontal
+                </option>
+            </select>
+		</p>
 		<?php 
 	}
 
@@ -186,6 +214,8 @@ class Podcast_Widget extends WP_Widget {
         $instance['auto'] = ( ! empty( $new_instance['auto'] ) ) ? sanitize_text_field( $new_instance['auto'] ) : '';
         
         $instance['refresh'] = ( ! empty( $new_instance['refresh'] ) ) ? sanitize_text_field( $new_instance['refresh'] ) : '';
+
+        $instance['layout'] = ( ! empty( $new_instance['layout'] ) ) ? sanitize_text_field( $new_instance['layout'] ) : '';
 
 		return $instance;
 	}

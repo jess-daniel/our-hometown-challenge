@@ -1,1 +1,8 @@
-/* Use CSS to make widget responsive */
+#podcast-content-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+#podcast-content {
+  display: flex;
+}

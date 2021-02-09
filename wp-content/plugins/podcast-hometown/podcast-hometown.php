@@ -17,10 +17,10 @@ if(!defined('ABSPATH')) {
 }
 
 // load scripts
-require_once(plugin_dir_path(__FILE__).'includes/podcast-scripts.php');
+require_once(plugin_dir_path(__FILE__).'/includes/podcast-scripts.php');
 
 // load class
-require_once(plugin_dir_path(__FILE__).'includes/podcast-class.php');
+require_once(plugin_dir_path(__FILE__).'/includes/podcast-class.php');
 
 // register widget
 function register_podcast(){
