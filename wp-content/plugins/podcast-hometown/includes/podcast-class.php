@@ -41,8 +41,16 @@ class Podcast_Widget extends WP_Widget {
             $content ;
 
             // use cache if set and still fresh
-            if($instance['refresh'] == 'cache' && file_exists($cache_file) && filemtime($cache_file) > time()-86400) {
-                echo file_get_contents($cache_file);
+            if($instance['refresh'] == 'cache' && file_exists($cache_file) && filemtime($cache_file) > time()-84600) {
+                if ($instance['layout'] == 'vertical') {
+                    echo "<div id=podcast-content-vertical>";
+                    echo file_get_contents($cache_file);
+                    echo "</div>";
+                } else {
+                    echo "<div id=podcast-content>";
+                    echo file_get_contents($cache_file);
+                    echo "</div>";
+                }
             // cache not set or stale
             } else {
                 // TODO: abstract fetching logic into function that returns content
